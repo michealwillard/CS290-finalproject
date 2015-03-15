@@ -10,8 +10,7 @@ include 'storedInfo.php';
 $connectDB = mysqli_connect("oniddb.cws.oregonstate.edu","willardm-db",$myPassword, "willardm-db") or die('Database connection failed.');
 
 
-if(isset($_POST["username"]))
-{
+if(isset($_POST["username"])) {
     //check if its an ajax request, exit if not
     if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
         die();
@@ -24,16 +23,16 @@ if(isset($_POST["username"]))
     $username_exists = mysqli_num_rows($results); //total records
     if($_POST['type'] === 'create') {
       if($username_exists) {
-        echo "<span class='glyphicon glyphicon-alert'></span>This username is Taken";
+        echo "<span class='glyphicon glyphicon-alert'></span> This username is Taken";
       }else{
-        echo "<span class='glyphicon glyphicon-ok-2'></span>This username is Available";
+        echo "<span class='glyphicon glyphicon-ok'></span> This username is Available";
       }
     }
     if($_POST['type'] === 'login') {
       if($username_exists) {
-        echo "<span class='glyphicon glyphicon-ok-2'>username is correct</span>";
+        echo "<span class='glyphicon glyphicon-ok'></span> This username is legit.";
       }else{
-        echo "<span class='glyphicon glyphicon-alert'></span>This username doesn't exist.";
+        echo "<span class='glyphicon glyphicon-alert'></span> This username doesn't exist.";
       }
     }
     mysqli_close($connectDB);

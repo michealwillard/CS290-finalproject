@@ -30,6 +30,7 @@ Assignment 4 Part 1
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
+    <!-- // <script src="js/bootstrap.min.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -60,8 +61,8 @@ Assignment 4 Part 1
               echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
             }
             else {
-              echo "<li class='active'><a href='login.php'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
-              echo "<li><a href='newaccount.php'><span class='glyphicon glyphicon-user'></span> Create Account</a></li>";
+              echo "<li><a href='login.php'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
+              echo "<li class='active'><a href='newaccount.php'><span class='glyphicon glyphicon-user'></span> Create Account</a></li>";
             }
             ?>
           </ul>
@@ -70,40 +71,31 @@ Assignment 4 Part 1
       </div>
     </nav>
 
-
     <div class="container">
-
-      <form method="post" action="loginAction.php" class="form-signin">
-        <?php
-        if(isset($_GET)) {
-          if($_GET['error'] === 'no_user_pass_combo') {
-            echo '<h3 class="bg-danger">That username/password combination does not exist.</h3>';
-          }
-          if($_GET['error'] === 'blank') {
-            echo '<p class="bg-danger">You failed to enter all the necessary information.</h3>'; // Should trigger, since fields are required.
-          }
-          if($_GET['error'] === 'none_created') {
-            echo '<h3 class="bg-success">Account successfully created.  Please login.</h3>';
-          }
-        }
-        ?>
-        <h2 class="form-signin-heading">Please sign in</h2>
+      <form method="post" class="form-signin" id="createAcc">
+        <span id="create_results"></span>
+        <h2 class="form-signin-heading">Create New Account</h2>
         <div class="form-group">
-          <label for="inputUsername">User Name:
-            <span id="user-result"></span></label>
+          <label for="inputUsername">User Name:</label>
             <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="roberto123" required autofocus>
             <span id="username_result"></span>
           </div>
-
           <div class="form-group">
             <label for="inputPassword">Password:</label>
             <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="password" required>
           </div>
-          <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="login">Sign in</button>
+          <div class="form-group">
+            <label for="inputFirstname">First Name:</label>
+            <input type="text" name="inputFirstname" id="inputFirstname" class="form-control" placeholder="Roberto" required>
+          </div>
+          <div class="form-group">
+            <label for="inputLastname">Last Name:</label>
+            <input type="text" name="inputLastname" id="inputLastname" class="form-control" placeholder="Clemente" required>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="login" id="submit">Create</button>
         </form>
         <hr>
       </div> <!-- /container -->
-
 
       <footer class="footer">
         <div class="container">
@@ -116,27 +108,53 @@ Assignment 4 Part 1
         </div>
       </footer>
 
-
-
-
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
 
     <!-- UNIQUE JAVASCRIPT
     =================================================== -->
 
     <script type="text/javascript">
-    $("#inputUsername").keyup(function (e) {
+    $("#inputUsername").keyup(function(event) {
        var username = $(this).val();
-       $.post('check_username.php', {'username':username, 'type':'login'}, function(data) {
+       $.post('check_username.php', {'username':username, 'type':'create'}, function(data) {
        $("#username_result").html(data); // check_username.php result
        });
     });
+
+    $(document).ready(function(){
+      $("#submit").click(function(){
+        var username = $("#inputUsername").val();
+        var password = $("#inputPassword").val();
+        var first_name = $("#inputFirstname").val();
+        var last_name = $("#inputLastname").val();
+
+        var postString = 'username='+ username + '&password='+ password + '&first_name='+ first_name + '&last_name='+ last_name;
+        if(username == '' || password == '' || first_name == '' || last_name == '') {
+          alert("All Fields are Required");
+        }
+      else {
+          $.ajax({
+            type: "POST",
+            url: "createAccount.php",
+            data: postString,
+            cache: false,
+            success: function(result){
+              alert(result);
+              $('#createAcc')[0].reset();
+            }
+          });
+        }
+        return false;
+      });
+    });
+
     </script>
+
   </body>
 </html>

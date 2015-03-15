@@ -22,9 +22,9 @@ Assignment 4 Part 1
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link href="css/jumbotron.css" rel="stylesheet">
-    <link href="css/signin.css" rel="stylesheet">
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -48,7 +48,7 @@ Assignment 4 Part 1
         <!-- <div id="navbar" class="navbar-collapse collapse"> -->
         <div>
           <ul class="nav navbar-nav">
-            <li><a href="index.php">Adams Pirates</a></li>
+            <li class="active"><a href="index.php">Adams Pirates</a></li>
             <li><a href="roster.php">Roster</a></li>
             <li><a href="schedule.php">Schedule</a></li>
             <li><a href="messageboard.php">Message Board</a></li>
@@ -60,7 +60,7 @@ Assignment 4 Part 1
               echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
             }
             else {
-              echo "<li class='active'><a href='login.php'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
+              echo "<li><a href='login.php'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
               echo "<li><a href='newaccount.php'><span class='glyphicon glyphicon-user'></span> Create Account</a></li>";
             }
             ?>
@@ -70,53 +70,53 @@ Assignment 4 Part 1
       </div>
     </nav>
 
-
-    <div class="container">
-
-      <form method="post" action="loginAction.php" class="form-signin">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Hello,
         <?php
-        if(isset($_GET)) {
-          if($_GET['error'] === 'no_user_pass_combo') {
-            echo '<h3 class="bg-danger">That username/password combination does not exist.</h3>';
-          }
-          if($_GET['error'] === 'blank') {
-            echo '<p class="bg-danger">You failed to enter all the necessary information.</h3>'; // Should trigger, since fields are required.
-          }
-          if($_GET['error'] === 'none_created') {
-            echo '<h3 class="bg-success">Account successfully created.  Please login.</h3>';
-          }
+        if(isset($_SESSION['sessionActive'])) {
+          echo $_SESSION['firstname'];
         }
         ?>
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <div class="form-group">
-          <label for="inputUsername">User Name:
-            <span id="user-result"></span></label>
-            <input type="text" name="inputUsername" id="inputUsername" class="form-control" placeholder="roberto123" required autofocus>
-            <span id="username_result"></span>
-          </div>
+        </h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
 
-          <div class="form-group">
-            <label for="inputPassword">Password:</label>
-            <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="password" required>
-          </div>
-          <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" value="login">Sign in</button>
-        </form>
-        <hr>
-      </div> <!-- /container -->
-
-
-      <footer class="footer">
-        <div class="container">
-          <div class="col-xs-6">
-            <p class="text-muted">&copy; Micheal Willard 2014</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="text-muted"><a href="https://pssbl.com/t/646/summer/2015/adams/pirates">PSSBL Adams Pirates</a></p>
-          </div>
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
-      </footer>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+      </div>
+      <hr>
+    </div> <!-- /container -->
 
-
+    <footer class="footer">
+      <div class="container">
+        <div class="col-xs-6">
+          <p class="text-muted">&copy; Micheal Willard 2014</p>
+        </div>
+        <div class="col-xs-6">
+          <p class="text-muted"><a href="https://pssbl.com/t/646/summer/2015/adams/pirates">PSSBL Adams Pirates</a></p>
+        </div>
+      </div>
+    </footer>
 
 
     <!-- Bootstrap core JavaScript
@@ -126,17 +126,5 @@ Assignment 4 Part 1
     <script src="../../dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- UNIQUE JAVASCRIPT
-    =================================================== -->
-
-    <script type="text/javascript">
-    $("#inputUsername").keyup(function (e) {
-       var username = $(this).val();
-       $.post('check_username.php', {'username':username, 'type':'login'}, function(data) {
-       $("#username_result").html(data); // check_username.php result
-       });
-    });
-    </script>
   </body>
 </html>

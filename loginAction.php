@@ -6,30 +6,9 @@ include 'storedInfo.php';
 // Winter 2015
 // Final Project
 
-$connectDB = mysql_connect("oniddb.cws.oregonstate.edu","willardm-db",$myPassword) or die("Failed to connect to MySQL: " . mysql_error());
+$connectDB = mysql_connect("oniddb.cws.oregonstate.edu","willardm-db",$myPassword) or die("Failed to connect to MySQL");
 
-mysql_select_db("willardm-db",$connectDB) or die("Failed to connect to database: " . mysql_error());
-
-// function Login() {
-//   session_start();
-//   if(!empty($_POST['inputUsername'])) {
-//     $query = mysql_query("SELECT * FROM userAccounts WHERE username = '$_POST[inputUsername]' AND password = '$_POST[inputPassword]'") OR die(mysql_error());
-//     $row = mysql_fetch_array($query);
-//     if(!empty($row['username']) AND !empty($row['password'])) {
-//       $_SESSION['username'] = $row['username'];
-//       $_SESSION['firstname'] = $row['firstname'];
-//       $_SESSION['lastname'] = $row['lastname'];
-//       $_SESSION['sessionActive'] = true;
-//       echo "You've logged in successfully.";
-//     }
-//     else {
-//       echo "The User Name and Password combination you have entered is incorrect.";
-//     }
-//   }
-//   else {
-//     header("Location: login.php", true);
-//   }
-// }
+mysql_select_db("willardm-db",$connectDB) or die("Failed to connect to database");
 
 function Login() {
   session_start(); //starting the session for user profile page
@@ -56,7 +35,6 @@ function Login() {
     header("Location: login.php?error=blank"); // Append error message
   }
 }
-
 
 if(isset($_POST['submit'])) {
   Login();
