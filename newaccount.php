@@ -57,7 +57,7 @@ Assignment 4 Part 1
           <ul class="nav navbar-nav navbar-right">
             <?php
             if(isset($_SESSION['sessionActive'])) {
-              echo "<li><a><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
+              echo "<li><a href='profile.php'><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
               echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
             }
             else {

@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'storedInfo.php';
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 ?>
 <!DOCTYPE html>
 <!--
@@ -19,7 +21,7 @@ Final Project
   <meta name="author" content="">
   <link rel="icon" href="../../favicon.ico">
 
-  <title>PSSBL Adams Pirates - Roster</title>
+  <title>PSSBL Adams Pirates - Profile</title>
 
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -50,14 +52,14 @@ Final Project
       <div>
         <ul class="nav navbar-nav">
           <li><a href="index.php">Adams Pirates</a></li>
-          <li class="active"><a href="roster.php">Roster</a></li>
+          <li><a href="roster.php">Roster</a></li>
           <li><a href="schedule.php">Schedule</a></li>
           <li><a href="messageboard.php">Message Board</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <?php
           if(isset($_SESSION['sessionActive'])) {
-            echo "<li><a href='profile.php'><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
+            echo "<li class='active'><a><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
             echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
           }
           else {
@@ -72,76 +74,35 @@ Final Project
   </nav>
 
   <div class="container">
-    <h2>2015 Adams Pirates Roster</h2>
-    <!-- CREATE THE TABLE -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Jersey Number</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "willardm-db", $myPassword, "willardm-db");
+    <h2>User Profile</h2>
+  </div> <!-- /container -->
 
+  <div class='container'>
+    <div class="col-sm-4">
+      <div class="panel panel-warning">
+        <?php
+        $tempUser = $_SESSION['username'];
+        $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "willardm-db", $myPassword, "willardm-db");
         if (!$mysqli || $mysqli->connect_errno){
           echo "Connnection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
         }
-
-        $queryStmt = "SELECT firstname, lastname, jerseyNum, age FROM teamRoster";
+        $queryStmt = "SELECT id, username, firstname, lastname FROM userAccounts WHERE username='$tempUser'";
         $tableOut = $mysqli->query($queryStmt);
-
         if ($tableOut->num_rows > 0){
           while ($row = $tableOut->fetch_row()) {
-            echo "<tr><td>" . $row[0] . " " . $row[1] .
-            "</td><td>". $row[3] .
-            "</td><td>". $row[2] .
-            "</td></tr>";
+            echo "<div class='panel-heading'>
+            <h3 class='panel-title'>Your Profile</h3></div>";
+            echo "<div class='panel-body'>
+            Member #: " . $row[0] .
+            "<br>User Name: " . $row[1] .
+            "<br>First Name: " . $row[2] .
+            "<br>Last Name: " . $row[3];
+            echo "</div>";
           }
         }
-        else{
-          echo "The database is empty";
-        }
         ?>
-      </tbody>
-    </table>
-  </div> <!-- /container -->
-
-  <!-- If the user is logged in, allow them to add players to the roster -->
-  <div class='container'>
-    <?php
-    if(isset($_SESSION['sessionActive'])) {
-      echo "
-      <h4>Add a player to the Roster</h4>
-      <p>All fields are required.</p>
-      <form method='post' action='addPlayer.php' id='addPlayer' class='form-inline' role='form'>
-        <div class='form-group'>
-          <label for='first_name'>First Name:</label>
-          <input type='text' class='form-control' id='fName' name='fName' placeholder='Roberto' required>
-        </div>
-        <div class='form-group'>
-          <label for='lName'>Last Name:</label>
-          <input type='text' class='form-control' id='lName' name='lName' placeholder='Clemente' required>
-        </div>
-        <div class='form-group'>
-          <label for='age'>Age:</label>
-          <input type='number' class='form-control' id='age' name='age' placeholder='19' min='19' max='99' required>
-        </div>
-        <div class='form-group'>
-          <label for='jersey'>Jersey #:</label>
-          <input type='number' class='form-control' id='jersey' name='jersey' placeholder='21' min='1' max='99' required>
-          <span id='jersey_result'></span>
-        </div>
-        <button type='submit' class='btn btn-default'>Submit</button>
-      </form>";
-    }
-    else {
-      echo "<h4>Login to Add More Pirates to the Ship.</h4>";
-    }
-
-    ?>
+      </div>
+    </div>
   </div>
 
 
@@ -168,14 +129,6 @@ Final Project
   <!-- UNIQUE JAVASCRIPT
   =================================================== -->
 
-  <script type="text/javascript">
-  $("#jersey").keyup(function(event) {
-    var jersey = $(this).val();
-    $.post('check_jersey.php', {'jersey':jersey}, function(data) {
-      $("#jersey_result").html(data); // check_jersey.php result
-    });
-  });
-  </script>
 
 </body>
 </html>

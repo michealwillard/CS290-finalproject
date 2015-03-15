@@ -7,7 +7,7 @@ Micheal Willard
 Oregon State University
 CS 290-400
 Winter 2015
-Assignment 4 Part 1
+Final Project
 -->
 <html lang="en">
   <head>
@@ -30,6 +30,10 @@ Assignment 4 Part 1
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <script src="http://maps.googleapis.com/maps/api/js">
+    </script>
+    <!-- 47.555948, -122.285735 -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -56,7 +60,7 @@ Assignment 4 Part 1
           <ul class="nav navbar-nav navbar-right">
             <?php
             if(isset($_SESSION['sessionActive'])) {
-              echo "<li><a><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
+              echo "<li><a href='profile.php'><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
               echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
             }
             else {
@@ -73,10 +77,13 @@ Assignment 4 Part 1
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>Hello,
+        <h1>
         <?php
         if(isset($_SESSION['sessionActive'])) {
-          echo $_SESSION['firstname'];
+          echo "Welcome back, " . $_SESSION['firstname'];
+        }
+        else {
+          echo "Welcome to the Home of the Adams Pirates.";
         }
         ?>
         </h1>
@@ -84,24 +91,47 @@ Assignment 4 Part 1
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
       </div>
     </div>
-
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="alert alert-warning" role="alert">
+            <h2>Upcoming Practices and Games</h2>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>Practice</h2>
+          <div id="googleMap" style="height:200px;width=200px"></div>
+
+          <ul class="list-group">
+            <li class="list-group-item"><b>Date: 3/14/2015</b></li>
+            <li class="list-group-item"><b>Time: 10:00AM</b></li>
+            <li class="list-group-item"><b>Location: The K-Center</b></li>
+          </ul>
         </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
+          <h2>Practice</h2>
+          <div id="googleMap2" style="height:200px;width=200px"></div>
+
+          <ul class="list-group">
+            <li class="list-group-item"><b>Date: 3/14/2015</b></li>
+            <li class="list-group-item"><b>Time: 10:00AM</b></li>
+            <li class="list-group-item"><b>Location: The K-Center</b></li>
+          </ul>
+        </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <h2>Practice</h2>
+          <div id="googleMap2" style="height:200px;width=200px"></div>
+
+          <ul class="list-group">
+            <li class="list-group-item"><b>Date: 3/14/2015</b></li>
+            <li class="list-group-item"><b>Time: 10:00AM</b></li>
+            <li class="list-group-item"><b>Location: The K-Center</b></li>
+          </ul>
         </div>
       </div>
       <hr>
@@ -123,8 +153,44 @@ Assignment 4 Part 1
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+    <script>
+    // Location could be pulled with Ajax script from server with schedule
+    var myCenter=new google.maps.LatLng(47.555948, -122.285735);
+    var myCenter2=new google.maps.LatLng(47.555948, -122.285735);
+
+    function initialize()
+    {
+      var mapProp = {
+        center:myCenter,
+        zoom:11,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var mapProp2 = {
+        center:myCenter2,
+        zoom:11,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+
+      var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+      var map2=new google.maps.Map(document.getElementById("googleMap2"),mapProp2);
+
+      var marker=new google.maps.Marker({
+        position:myCenter,
+      });
+      marker.setMap(map);
+
+      var marker2=new google.maps.Marker({
+        position:myCenter2,
+      });
+      marker2.setMap(map2);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
   </body>
 </html>

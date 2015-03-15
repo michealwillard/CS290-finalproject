@@ -19,7 +19,7 @@ Final Project
   <meta name="author" content="">
   <link rel="icon" href="../../favicon.ico">
 
-  <title>PSSBL Adams Pirates - Roster</title>
+  <title>PSSBL Adams Pirates - Message Board</title>
 
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -50,9 +50,9 @@ Final Project
       <div>
         <ul class="nav navbar-nav">
           <li><a href="index.php">Adams Pirates</a></li>
-          <li class="active"><a href="roster.php">Roster</a></li>
+          <li><a href="roster.php">Roster</a></li>
           <li><a href="schedule.php">Schedule</a></li>
-          <li><a href="messageboard.php">Message Board</a></li>
+          <li class="active"><a href="messageboard.php">Message Board</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <?php
@@ -72,16 +72,9 @@ Final Project
   </nav>
 
   <div class="container">
-    <h2>2015 Adams Pirates Roster</h2>
+    <h2>The Dugout</h2>
     <!-- CREATE THE TABLE -->
     <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Jersey Number</th>
-        </tr>
-      </thead>
       <tbody>
         <?php
         $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "willardm-db", $myPassword, "willardm-db");
@@ -90,55 +83,41 @@ Final Project
           echo "Connnection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
         }
 
-        $queryStmt = "SELECT firstname, lastname, jerseyNum, age FROM teamRoster";
+        $queryStmt = "SELECT id, name, message, ts FROM messageBoard";
         $tableOut = $mysqli->query($queryStmt);
 
         if ($tableOut->num_rows > 0){
           while ($row = $tableOut->fetch_row()) {
-            echo "<tr><td>" . $row[0] . " " . $row[1] .
-            "</td><td>". $row[3] .
+            echo "<tr><td>" . $row[0] .
+            "</td><td>" . $row[1] .
             "</td><td>". $row[2] .
+            "</td><td>". $row[3] .
             "</td></tr>";
           }
         }
         else{
-          echo "The database is empty";
+          echo "The Message Board is empty.";
         }
         ?>
       </tbody>
     </table>
   </div> <!-- /container -->
 
-  <!-- If the user is logged in, allow them to add players to the roster -->
   <div class='container'>
     <?php
     if(isset($_SESSION['sessionActive'])) {
       echo "
-      <h4>Add a player to the Roster</h4>
-      <p>All fields are required.</p>
-      <form method='post' action='addPlayer.php' id='addPlayer' class='form-inline' role='form'>
+      <h4>Add to the conversation ...</h4>
+      <h5>255 Characters Max:</h5>
+      <form method='post' action='addComment.php' id='addComment' class='form-inline' role='form'>
         <div class='form-group'>
-          <label for='first_name'>First Name:</label>
-          <input type='text' class='form-control' id='fName' name='fName' placeholder='Roberto' required>
-        </div>
-        <div class='form-group'>
-          <label for='lName'>Last Name:</label>
-          <input type='text' class='form-control' id='lName' name='lName' placeholder='Clemente' required>
-        </div>
-        <div class='form-group'>
-          <label for='age'>Age:</label>
-          <input type='number' class='form-control' id='age' name='age' placeholder='19' min='19' max='99' required>
-        </div>
-        <div class='form-group'>
-          <label for='jersey'>Jersey #:</label>
-          <input type='number' class='form-control' id='jersey' name='jersey' placeholder='21' min='1' max='99' required>
-          <span id='jersey_result'></span>
+          <textarea id='comment' name='comment' rows='4' cols='60' placeholder='Add a comment' maxlength='255' required></textarea>
         </div>
         <button type='submit' class='btn btn-default'>Submit</button>
       </form>";
     }
     else {
-      echo "<h4>Login to Add More Pirates to the Ship.</h4>";
+      echo "<h4>Login to Add to the conversation.</h4>";
     }
 
     ?>
@@ -168,14 +147,6 @@ Final Project
   <!-- UNIQUE JAVASCRIPT
   =================================================== -->
 
-  <script type="text/javascript">
-  $("#jersey").keyup(function(event) {
-    var jersey = $(this).val();
-    $.post('check_jersey.php', {'jersey':jersey}, function(data) {
-      $("#jersey_result").html(data); // check_jersey.php result
-    });
-  });
-  </script>
 
 </body>
 </html>
