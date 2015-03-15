@@ -19,7 +19,7 @@ Final Project
   <meta name="author" content="">
   <link rel="icon" href="../../favicon.ico">
 
-  <title>PSSBL Adams Pirates - Profile</title>
+  <title>PSSBL Adams Pirates - Schedule</title>
 
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -51,13 +51,13 @@ Final Project
         <ul class="nav navbar-nav">
           <li><a href="index.php">Adams Pirates</a></li>
           <li><a href="roster.php">Roster</a></li>
-          <li><a href="schedule.php">Schedule</a></li>
+          <li class="active"><a href="schedule.php">Schedule</a></li>
           <li><a href="messageboard.php">Message Board</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <?php
           if(isset($_SESSION['sessionActive'])) {
-            echo "<li class='active'><a><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
+            echo "<li><a href='profile.php'><font color='#FDB829'>$_SESSION[firstname] $_SESSION[lastname]</font></a></li>";
             echo "<li><a href='logoutAction.php?action=end'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
           }
           else {
@@ -72,35 +72,89 @@ Final Project
   </nav>
 
   <div class="container">
-    <h2>User Profile</h2>
-  </div> <!-- /container -->
-
-  <div class='container'>
-    <div class="col-sm-4">
-      <div class="panel panel-warning">
+    <h2>2015 Adams Pirates Schedule</h2>
+    <!-- CREATE THE TABLE -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Opponent</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
         <?php
-        $tempUser = $_SESSION['username'];
         $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "willardm-db", $myPassword, "willardm-db");
+
         if (!$mysqli || $mysqli->connect_errno){
           echo "Connnection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
         }
-        $queryStmt = "SELECT id, username, firstname, lastname FROM userAccounts WHERE username='$tempUser'";
+
+        $queryStmt = "SELECT type, opponent, date, time, location FROM teamSchedule ORDER BY date ASC";
         $tableOut = $mysqli->query($queryStmt);
+
         if ($tableOut->num_rows > 0){
           while ($row = $tableOut->fetch_row()) {
-            echo "<div class='panel-heading'>
-            <h3 class='panel-title'>Your Profile</h3></div>";
-            echo "<div class='panel-body'>
-            Member #: " . $row[0] .
-            "<br>User Name: " . $row[1] .
-            "<br>First Name: " . $row[2] .
-            "<br>Last Name: " . $row[3];
-            echo "</div>";
+            echo "<tr><td>" . $row[0] .
+            "</td><td>". $row[1] .
+            "</td><td>". $row[2] .
+            "</td><td>". $row[3] .
+            "</td><td>". $row[4] .
+            "</td></tr>";
           }
         }
+        else{
+          echo "The database is empty";
+        }
         ?>
-      </div>
-    </div>
+      </tbody>
+    </table>
+  </div> <!-- /container -->
+
+  <!-- If the user is logged in, allow them to add players to the roster -->
+  <div class='container'>
+    <?php
+    if(isset($_SESSION['sessionActive'])) {
+      echo "
+      <h4>Add a player to the Roster</h4>
+      <p>All fields are required.</p>
+      <form method='post' action='addSchedule.php' id='addSchedule' class='form-inline' role='form'>
+
+        <div class='form-group'>
+          <input type='radio' class='form-control' id='type' name='type' value='Game' checked>Game<br>
+          <input type='radio' class='form-control' id='type' name='type'  value='Practice'>Practice
+        </div>
+
+        <div class='form-group'>
+          <label for='opponent'>Opponent:</label>
+          <input type='text' class='form-control' id='opponent' name='opponent' placeholder='Braves' required>
+        </div>
+
+        <div class='form-group'>
+          <label for='age'>Date (2015-03-15):</label>
+          <input type='date' class='form-control' id='date' name='date' min='2015-03-15' required>
+        </div>
+
+        <div class='form-group'>
+          <label for='time'>Time:</label>
+          <input type='time' class='form-control' id='time' name='time' required>
+        </div>
+
+        <div class='form-group'>
+          <label for='location'>Location:</label>
+          <input type='text' class='form-control' id='location' name='location' placeholder='Safeco Field' required>
+        </div>
+
+        <button type='submit' class='btn btn-default'>Submit</button>
+      </form>";
+    }
+    else {
+      echo "<h4>Login to Add an Event.</h4>";
+    }
+
+    ?>
   </div>
 
 
@@ -126,7 +180,6 @@ Final Project
 
   <!-- UNIQUE JAVASCRIPT
   =================================================== -->
-
 
 </body>
 </html>

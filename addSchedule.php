@@ -8,16 +8,17 @@ include 'storedInfo.php';
 
 $connectDB = new mysqli("oniddb.cws.oregonstate.edu", "willardm-db", $myPassword, "willardm-db") or die("Failed to connect to MySQL");
 
-$fn = $_POST["fName"];
-$ln = $_POST["lName"];
-$a = $_POST["age"];
-$jer = $_POST["jersey"];
+$type = $_POST["type"];
+$opp = $_POST["opponent"];
+$date = $_POST["date"];
+$time = $_POST["time"];
+$loc = $_POST["location"];
 
 
-if(!$stmt = $connectDB->prepare("INSERT INTO teamRoster(firstname, lastname, jerseyNum, age) VALUES (?, ?, ?, ?)")){
+if(!$stmt = $connectDB->prepare("INSERT INTO teamSchedule(type, opponent, date, time, location) VALUES (?, ?, ?, ?, ?)")){
   echo "Prepare failed";
 }
-if (!$stmt->bind_param("ssii", $fn, $ln, $jer, $a)) {
+if (!$stmt->bind_param("sssss", $type, $opp, $date, $time, $loc)) {
   echo "Binding param failed";
 }
 if (!$stmt->execute()) {
@@ -26,6 +27,6 @@ if (!$stmt->execute()) {
 $filePath = explode('/', $_SERVER['PHP_SELF'], -1);
 $filePath = implode('/', $filePath);
 $redirect = "http://" . $_SERVER['HTTP_HOST'] . $filePath;
-header("Location: {$redirect}/roster.php", true);
+header("Location: {$redirect}/schedule.php", true);
 die();
 ?>

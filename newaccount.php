@@ -18,7 +18,7 @@ Assignment 4 Part 1
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>PSSBL Adams Pirates</title>
+    <title>PSSBL Adams Pirates - Create Account</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

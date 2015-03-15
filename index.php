@@ -87,8 +87,7 @@ Final Project
         }
         ?>
         </h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <p>The Adams Pirates are an adult baseball team in the <a href="https://pssbl.com/">Puget Sound Senior Baseball League.</a></p>
       </div>
     </div>
     <div class="container">
@@ -106,31 +105,31 @@ Final Project
         <div class="col-md-4">
           <h2>Practice</h2>
           <div id="googleMap" style="height:200px;width=200px"></div>
-
           <ul class="list-group">
             <li class="list-group-item"><b>Date: 3/14/2015</b></li>
             <li class="list-group-item"><b>Time: 10:00AM</b></li>
             <li class="list-group-item"><b>Location: The K-Center</b></li>
           </ul>
         </div>
+
         <div class="col-md-4">
           <h2>Practice</h2>
           <div id="googleMap2" style="height:200px;width=200px"></div>
 
           <ul class="list-group">
-            <li class="list-group-item"><b>Date: 3/14/2015</b></li>
-            <li class="list-group-item"><b>Time: 10:00AM</b></li>
-            <li class="list-group-item"><b>Location: The K-Center</b></li>
+            <li class="list-group-item"><b>Date: 3/21/2015</b></li>
+            <li class="list-group-item"><b>Time: 1:00PM</b></li>
+            <li class="list-group-item"><b>Location: Chief Sealth High School</b></li>
           </ul>
         </div>
+
         <div class="col-md-4">
           <h2>Practice</h2>
-          <div id="googleMap2" style="height:200px;width=200px"></div>
-
+          <div id="googleMap3" style="height:200px;width=200px"></div>
           <ul class="list-group">
-            <li class="list-group-item"><b>Date: 3/14/2015</b></li>
-            <li class="list-group-item"><b>Time: 10:00AM</b></li>
-            <li class="list-group-item"><b>Location: The K-Center</b></li>
+            <li class="list-group-item"><b>Date: 3/28/2015</b></li>
+            <li class="list-group-item"><b>Time: 1:00PM</b></li>
+            <li class="list-group-item"><b>Location: Russell Road Park</b></li>
           </ul>
         </div>
       </div>
@@ -160,8 +159,8 @@ Final Project
     <script>
     // Location could be pulled with Ajax script from server with schedule
     var myCenter=new google.maps.LatLng(47.555948, -122.285735);
-    var myCenter2=new google.maps.LatLng(47.555948, -122.285735);
-
+    var myCenter2=new google.maps.LatLng(47.525054,-122.369217);
+    var myCenter3=new google.maps.LatLng(47.38343,-122.260857);
     function initialize()
     {
       var mapProp = {
@@ -174,9 +173,16 @@ Final Project
         zoom:11,
         mapTypeId:google.maps.MapTypeId.ROADMAP
       };
+      var mapProp3 = {
+        center:myCenter3,
+        zoom:11,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
 
       var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
       var map2=new google.maps.Map(document.getElementById("googleMap2"),mapProp2);
+      var map3=new google.maps.Map(document.getElementById("googleMap3"),mapProp3);
+
 
       var marker=new google.maps.Marker({
         position:myCenter,
@@ -187,6 +193,11 @@ Final Project
         position:myCenter2,
       });
       marker2.setMap(map2);
+
+      var marker3=new google.maps.Marker({
+        position:myCenter3,
+      });
+      marker3.setMap(map3);
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
